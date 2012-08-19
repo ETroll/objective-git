@@ -221,6 +221,30 @@
     
 }
 
+- (void) testCanCloneRemote
+{
+    NSError *error = nil;
+    
+    NSURL* remoteURL = [NSURL URLWithString:@"git://github.com/ETroll/SimpleNet.git"];
+    NSURL* localURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"/tmp/%@", remoteURL.lastPathComponent]];
+    
+    
+    NSFileManager *fm = [[NSFileManager alloc] init];
+	
+	if([fm fileExistsAtPath:[localURL path]]) {
+		[fm removeItemAtPath:[localURL path] error:&error];
+		GHAssertNil(error, [error localizedDescription]);
+	}
+    
+    GTRepository *newRepo = [GTRepository cloneRepositoryWithURL:remoteURL
+                                                  toLocalFileURL:localURL
+                                                 andFetchRefspec:@"+refs/heads/*:refs/remotes/origin/*"
+                                                           error:&error];
+	
+	GHAssertNil(error, [error localizedDescription]);
+	GHAssertNotNil(newRepo, nil);
+}
+
 // This messes other tests up b/c it writes a new HEAD, but doesn't set it back again
 /*
 - (void)testLookupHeadThenCommitAndThenLookupHeadAgain {

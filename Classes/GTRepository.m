@@ -116,6 +116,30 @@
     return [[self alloc] initWithURL:localFileURL error:error];
 }
 
++ (id)cloneRepositoryWithURL:(NSURL*) remoteRepoURL toLocalFileURL:(NSURL*)localFileURL andFetchRefspec:(NSString*)refspec error:(NSError**)error 
+{
+
+    git_repository *r = NULL;
+    git_indexer_stats fetch_stats;
+	git_indexer_stats checkout_stats;
+	git_checkout_opts opts;
+
+
+    int gitError = git_clone(&r, remoteRepoURL.absoluteString.UTF8String, localFileURL.path.UTF8String, &fetch_stats, &checkout_stats, &opts);
+    if(gitError == GIT_OK)
+    {
+        git_repository_free(r);
+        return [[self alloc] initWithURL:localFileURL error:error];
+    }
+    else 
+    {
+        if (error == nil) {
+            *error = [NSError git_errorFor:gitError withAdditionalDescription:@"Error cloning repository"];
+        }
+        return nil;
+    }
+}
+
 @synthesize git_repository;
 @synthesize fileURL;
 @synthesize index;
