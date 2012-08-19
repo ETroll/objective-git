@@ -116,7 +116,7 @@
     return [[self alloc] initWithURL:localFileURL error:error];
 }
 
-+ (id)cloneRepositoryWithURL:(NSURL*) remoteRepoURL toLocalFileURL:(NSURL*)localFileURL andFetchRefspec:(NSString*)refspec error:(NSError**)error 
++ (id)cloneRepositoryWithURL:(NSURL*) remoteRepoURL toLocalFileURL:(NSURL*)localFileURL error:(NSError**)error 
 {
 
     git_repository *r = NULL;

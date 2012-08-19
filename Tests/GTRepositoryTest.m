@@ -238,7 +238,6 @@
     
     GTRepository *newRepo = [GTRepository cloneRepositoryWithURL:remoteURL
                                                   toLocalFileURL:localURL
-                                                 andFetchRefspec:@"+refs/heads/*:refs/remotes/origin/*"
                                                            error:&error];
 	
 	GHAssertNil(error, [error localizedDescription]);
